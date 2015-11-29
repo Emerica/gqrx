@@ -59,6 +59,20 @@
        </widget>
       </item>
       <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="setLoButton">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Toggle setting LO.&lt;/p&gt;&lt;p&gt;Usefull when using passthru on HamItUp.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Set LO</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
        <widget class="QDoubleSpinBox" name="lnbSpinBox">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">

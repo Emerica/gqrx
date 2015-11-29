@@ -58,12 +58,19 @@ void DockInputCtl::readSettings(QSettings *settings)
 
     setIqBalance(settings->value("input/iq_balance", false).toBool());
     emit iqBalanceChanged(ui->iqBalanceButton->isChecked());
+    
+
+    bool bool_val = settings->value("input/setlo", true).toBool();
+    setLo(bool_val);
 
     qint64 lnb_lo = settings->value("input/lnb_lo", 0).toLongLong(&conv_ok);
-    setLnbLo(((double)lnb_lo)/1.0e6);
-    emit lnbLoChanged(ui->lnbSpinBox->value());
+    if (bool_val)
+    {
+        setLnbLo(((double)lnb_lo)/1.0e6);
+        emit lnbLoChanged(ui->lnbSpinBox->value());
+    }
 
-    bool bool_val = settings->value("input/ignore_limits", false).toBool();
+    bool_val = settings->value("input/ignore_limits", false).toBool();
     setIgnoreLimits(bool_val);
     emit ignoreLimitsChanged(bool_val);
 
@@ -148,6 +155,11 @@ void DockInputCtl::saveSettings(QSettings *settings)
     else
         settings->remove("input/hwagc");
 
+    if (lo())
+        settings->setValue("input/setlo", true);
+    else
+        settings->remove("input/setlo");
+
     // save antenna selection if there is more than one option
     if (ui->antSelector->count() > 1)
         settings->setValue("input/antenna", ui->antSelector->currentText());
@@ -218,7 +230,20 @@ bool DockInputCtl::agc()
 {
     return ui->agcButton->isChecked();
 }
-
+/*! \brief Set status of hardware AGC button.
+ *  \param enabled Whether hardware AGC is enabled or not.
+ */
+void DockInputCtl::setLo(bool enabled)
+{
+    ui->setLoButton->setChecked(enabled);
+}
+/*! \brief Get status of hardware AGC button.
+ *  \return Whether hardware AGC is enabled or not.
+ */
+bool DockInputCtl::lo()
+{
+    return ui->agcButton->isChecked();
+}
 
 /*! \brief Set new frequency correction.
  *  \param corr The new frequency correction in PPM.
@@ -405,6 +430,21 @@ void DockInputCtl::on_agcButton_toggled(bool checked)
 
     emit autoGainChanged(checked);
 }
+
+/*! \brief Automatic gain control button has been toggled. */
+void DockInputCtl::on_setLoButton_toggled(bool checked)
+{
+    if (checked)
+    {
+        //setLnbLo(((double)ui->lnbSpinBox->value())/1.0e6);
+        emit lnbLoChanged(ui->lnbSpinBox->value());
+    }else{
+        //setLnbLo(((double)0)/1.0e6);
+        emit lnbLoChanged(0);
+    }
+    
+}
+
 
 /*! \brief Frequency correction changed.
  *  \param value The new frequency correction in ppm.

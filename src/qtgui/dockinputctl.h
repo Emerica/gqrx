@@ -79,6 +79,9 @@ public:
     void setAgc(bool enabled);
     bool agc();
 
+    void setLo(bool enabled);
+    bool lo();
+
     void setFreqCorr(double corr);
     double freqCorr();
 
@@ -120,7 +123,7 @@ private slots:
     void on_iqBalanceButton_toggled(bool checked);
     void on_ignoreButton_toggled(bool checked);
     void on_antSelector_currentIndexChanged(const QString &antenna);
-
+    void on_setLoButton_toggled(bool checked);
     void sliderValueChanged(int value);
 
 private:
